@@ -1,13 +1,10 @@
 package com.fpmislata.banco.controller.webModel.request;
 
-public record TransferenciaRequest(
+public record PagoTarjetaRequest(
         AutorizacionRequest autorizacion,
-        OrigenIbanRequest origen,
+        TarjetaCreditoRequest origen,
         DestinoIbanRequest destino,
         PagoRequest pago) {
-    public record OrigenIbanRequest(String iban) {
-    }
-
     public record DestinoIbanRequest(String iban) {
     }
 }
