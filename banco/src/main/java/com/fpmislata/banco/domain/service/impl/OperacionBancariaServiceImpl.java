@@ -46,20 +46,15 @@ public class OperacionBancariaServiceImpl implements OperacionBancariaService {
     @Override
     @Transactional
     public MovimientoBancarioDetailResponse transferencia(TransferenciaRequest request) {
-        // 1. Validar Autorizacion
         Cliente cliente = validarAutorizacion(request.autorizacion().login(), request.autorizacion().api_token());
 
-        // 2. Validar IBANs
         validarIban(request.origen().iban());
         validarIban(request.destino().iban());
 
-        // 3. Validar Importe y Concepto
         validarPago(request.pago().importe(), request.pago().concepto());
 
-        // 4. Validar que la cuenta origen pertenece al usuario login
         validarPropiedadCuenta(request.origen().iban(), request.autorizacion().login());
 
-        // 5. Ejecutar Movimiento
         return moverDinero(request.origen().iban(), request.destino().iban(),
                 request.pago().importe(), request.pago().concepto(),
                 OrigenMovimientoBancario.TRANSFERENCIA, null);
@@ -68,26 +63,20 @@ public class OperacionBancariaServiceImpl implements OperacionBancariaService {
     @Override
     @Transactional
     public MovimientoBancarioDetailResponse pagoTarjeta(PagoTarjetaRequest request) {
-        // 1. Validar Autorizacion
         Cliente cliente = validarAutorizacion(request.autorizacion().login(), request.autorizacion().api_token());
 
-        // 2. Validar IBAN destino
         validarIban(request.destino().iban());
 
-        // 3. Validar Importe y Concepto
         validarPago(request.pago().importe(), request.pago().concepto());
 
-        // 4. Validar que la cuenta destino pertenece al usuario login (Regla
-        // solicitada)
+       
         validarPropiedadCuenta(request.destino().iban(), request.autorizacion().login());
 
-        // 5. Validar Tarjeta y obtener su cuenta asociada
         TarjetaCreditoEntity tarjetaEntity = validarTarjeta(request.origen().numeroTarjeta(),
                 request.origen().fechaCaducidad(),
                 request.origen().cvc(),
                 request.origen().nombreCompleto());
 
-        // 6. Ejecutar Movimiento desde la cuenta de la tarjeta
         return moverDinero(tarjetaEntity.getCuenta().getIban(), request.destino().iban(),
                 request.pago().importe(), request.pago().concepto(),
                 OrigenMovimientoBancario.TARJETA_BANCARIA, tarjetaEntity);
@@ -153,17 +142,11 @@ public class OperacionBancariaServiceImpl implements OperacionBancariaService {
             throw new BusinessException("Saldo insuficiente en la cuenta de origen: " + ibanOrigen);
         }
 
-        // Actualizar saldos
         origenEnt.setSaldo(origenEnt.getSaldo().subtract(importe));
         destinoEnt.setSaldo(destinoEnt.getSaldo().add(importe));
 
         entityManager.merge(origenEnt);
         entityManager.merge(destinoEnt);
-
-        // Registrar movimiento (simplificado para el ejemplo, usualmente habria 2
-        // apuntes o uno con origen/destino)
-        // El modelo MovimientoBancario solicitado parece ser un único registro con
-        // campos de origen/destino implícitos o a través de la tarjeta
 
         MovimientoBancario mov = new MovimientoBancario();
         mov.setTipoMovimientoBancario(TipoMovimientoBancario.DEBE); // Es un gasto para el origen
