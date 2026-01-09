@@ -18,6 +18,7 @@ public class ClienteMapper {
 
     public ClienteDto fromModelToDto(Cliente cliente) {
         return new ClienteDto(
+            cliente.getId(),
                 cliente.getLogin(),
                 cliente.getNombre(),
                 cliente.getApellido1(),
@@ -28,8 +29,9 @@ public class ClienteMapper {
 
     public Cliente fromDtoToModel(ClienteDto dto) {
         return new Cliente(
+                dto.id(),
                 dto.login(),
-                null, // Password usually not in DTO or handled separately
+                null,
                 dto.nombre(),
                 dto.apellido1(),
                 dto.apellido2(),

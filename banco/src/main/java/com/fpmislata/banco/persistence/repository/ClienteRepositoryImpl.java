@@ -59,6 +59,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     private Cliente toModel(ClienteEntity entity) {
         return new Cliente(
+            entity.getId(),
                 entity.getLogin(),
                 entity.getPassword(),
                 entity.getNombre(),
@@ -70,7 +71,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     private ClienteEntity toEntity(Cliente model) {
         ClienteEntity entity = new ClienteEntity();
-        // ID handling would depend on how Cliente is structured
+        entity.setId(model.getId());
         entity.setLogin(model.getLogin());
         entity.setPassword(model.getPassword());
         entity.setNombre(model.getNombre());

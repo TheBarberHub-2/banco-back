@@ -3,11 +3,8 @@ package com.fpmislata.banco.domain.service.impl;
 import com.fpmislata.banco.controller.webModel.request.PagoTarjetaRequest;
 import com.fpmislata.banco.controller.webModel.request.TransferenciaRequest;
 import com.fpmislata.banco.controller.webModel.response.MovimientoBancarioDetailResponse;
-import com.fpmislata.banco.domain.model.Cliente;
 import com.fpmislata.banco.domain.model.MovimientoBancario;
 import com.fpmislata.banco.domain.model.TarjetaCredito;
-import com.fpmislata.banco.domain.repository.ClienteRepository;
-import com.fpmislata.banco.domain.repository.CuentaBancariaRepository;
 import com.fpmislata.banco.domain.repository.MovimientoBancarioRepository;
 import com.fpmislata.banco.domain.service.OperacionBancariaService;
 import com.fpmislata.banco.enums.OrigenMovimientoBancario;
@@ -31,23 +28,15 @@ public class OperacionBancariaServiceImpl implements OperacionBancariaService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final ClienteRepository clienteRepository;
-    private final CuentaBancariaRepository cuentaRepository;
     private final MovimientoBancarioRepository movimientoRepository;
 
-    public OperacionBancariaServiceImpl(ClienteRepository clienteRepository,
-            CuentaBancariaRepository cuentaRepository,
-            MovimientoBancarioRepository movimientoRepository) {
-        this.clienteRepository = clienteRepository;
-        this.cuentaRepository = cuentaRepository;
+    public OperacionBancariaServiceImpl(MovimientoBancarioRepository movimientoRepository) {
         this.movimientoRepository = movimientoRepository;
     }
 
     @Override
     @Transactional
     public MovimientoBancarioDetailResponse transferencia(TransferenciaRequest request) {
-        Cliente cliente = validarAutorizacion(request.autorizacion().login(), request.autorizacion().api_token());
-
         validarIban(request.origen().iban());
         validarIban(request.destino().iban());
 
@@ -63,8 +52,6 @@ public class OperacionBancariaServiceImpl implements OperacionBancariaService {
     @Override
     @Transactional
     public MovimientoBancarioDetailResponse pagoTarjeta(PagoTarjetaRequest request) {
-        Cliente cliente = validarAutorizacion(request.autorizacion().login(), request.autorizacion().api_token());
-
         validarIban(request.destino().iban());
 
         validarPago(request.pago().importe(), request.pago().concepto());
@@ -80,11 +67,6 @@ public class OperacionBancariaServiceImpl implements OperacionBancariaService {
         return moverDinero(tarjetaEntity.getCuenta().getIban(), request.destino().iban(),
                 request.pago().importe(), request.pago().concepto(),
                 OrigenMovimientoBancario.TARJETA_BANCARIA, tarjetaEntity);
-    }
-
-    private Cliente validarAutorizacion(String login, String token) {
-        return clienteRepository.findByLoginAndApiToken(login, token)
-                .orElseThrow(() -> new BusinessException("Autorización fallida para el usuario: " + login));
     }
 
     private void validarIban(String iban) {
