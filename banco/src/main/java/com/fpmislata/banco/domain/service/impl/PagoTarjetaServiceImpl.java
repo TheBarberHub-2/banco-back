@@ -15,6 +15,7 @@ import com.fpmislata.banco.domain.service.dto.ClienteDto;
 import com.fpmislata.banco.domain.service.dto.CuentaBancariaDto;
 import com.fpmislata.banco.domain.service.dto.MovimientoBancarioDto;
 import com.fpmislata.banco.domain.service.dto.TarjetaCreditoDto;
+import com.fpmislata.banco.domain.validation.spring_validator.DtoValidator;
 import com.fpmislata.banco.enums.OrigenMovimientoBancario;
 import com.fpmislata.banco.enums.TipoMovimientoBancario;
 import com.fpmislata.banco.exception.BusinessException;
@@ -56,6 +57,8 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
             throw new BusinessException("Datos de la tarjeta incorrectos");
         }
 
+        DtoValidator.validate(destinoRequest);
+
         CuentaBancariaDto cuentaDestino = cuentaBancariaService.getByIban(destinoRequest.iban());
 
         if (cuentaDestino.cliente().id() != clienteDto.id()) {
@@ -63,6 +66,8 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
         }
 
         CuentaBancariaDto cuentaOrigen = tarjetaCreditoDto.cuenta();
+
+        DtoValidator.validate(pagoRequest);
 
         if (cuentaOrigen.saldo().compareTo(pagoRequest.importe()) < 0) {
             throw new BusinessException("Saldo insuficiente en la cuenta asociada a la tarjeta");

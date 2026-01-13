@@ -22,6 +22,7 @@ public class CuentaBancariaMapper {
             return null;
         }
         return new CuentaBancariaDetailResponse(
+                cuentaBancariaDto.id(),
                 cuentaBancariaDto.saldo(),
                 cuentaBancariaDto.iban());
     }

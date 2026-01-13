@@ -21,6 +21,7 @@ public class MovimientoBancarioMapper {
             return null;
         }
         return new MovimientoBancarioDetailResponse(
+                movimientoBancarioDto.id(),
                 movimientoBancarioDto.tipoMovimientoBancario(),
                 movimientoBancarioDto.origenMovimientoBancario(),
                 TarjetaCreditoMapper.getInstance().fromDtoToResponse(movimientoBancarioDto.tarjetaCreditoOrigen()),

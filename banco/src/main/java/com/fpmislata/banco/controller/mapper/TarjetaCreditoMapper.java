@@ -21,6 +21,7 @@ public class TarjetaCreditoMapper {
             return null;
         }
         return new TarjetaCreditoDetailResponse(
+                tarjetaCreditoDto.id(),
                 tarjetaCreditoDto.numeroTarjeta(),
                 tarjetaCreditoDto.fechaCaducidad(),
                 tarjetaCreditoDto.cvc(),

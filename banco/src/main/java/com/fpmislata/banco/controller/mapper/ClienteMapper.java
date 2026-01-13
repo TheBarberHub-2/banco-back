@@ -21,6 +21,7 @@ public class ClienteMapper {
             return null;
         }
         return new ClienteDetailResponse(
+                clienteDto.id(),
                 clienteDto.nombre(),
                 clienteDto.apellido1(),
                 clienteDto.apellido2(),

@@ -6,10 +6,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record MovimientoBancarioDetailResponse(
-        TipoMovimientoBancario tipoMovimientoBancario,
-        OrigenMovimientoBancario origenMovimientoBancario,
-        TarjetaCreditoDetailResponse tarjetaCreditoOrigen,
-        LocalDateTime fecha,
-        BigDecimal importe,
-        String concepto) {
+                Long id,
+                TipoMovimientoBancario tipoMovimientoBancario,
+                OrigenMovimientoBancario origenMovimientoBancario,
+                TarjetaCreditoDetailResponse tarjetaCreditoOrigen,
+                LocalDateTime fecha,
+                BigDecimal importe,
+                String concepto) {
 }

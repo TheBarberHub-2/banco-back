@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fpmislata.banco.controller.webModel.request.PagoTarjetaRequest;
 import com.fpmislata.banco.domain.service.PagoTarjetaService;
-import com.fpmislata.banco.domain.validation.spring_validator.DtoValidator;
 
 @RestController
 @RequestMapping("/api/pagoTarjeta")
@@ -23,9 +22,6 @@ public class PagoTarjetaController {
     @PostMapping
     public ResponseEntity<Void> procesarPagoTarjeta(
             @RequestBody PagoTarjetaRequest pagoTarjetaRequest) {
-
-        DtoValidator.validate(pagoTarjetaRequest.destino());
-        DtoValidator.validate(pagoTarjetaRequest.pago());
         pagoTarjetaService.pagoTarjeta(pagoTarjetaRequest.autorizacion(), pagoTarjetaRequest.origen(),
                 pagoTarjetaRequest.destino(), pagoTarjetaRequest.pago());
         return ResponseEntity.ok().build();
