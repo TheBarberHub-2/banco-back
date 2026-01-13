@@ -2,6 +2,7 @@ package com.fpmislata.banco.persistence.dao.jpa.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import com.fpmislata.banco.exception.ResourceNotFoundException;
 import com.fpmislata.banco.persistence.dao.jpa.CuentaBancariaJpaDao;
@@ -10,6 +11,7 @@ import com.fpmislata.banco.persistence.dao.jpa.entity.CuentaBancariaJpaEntity;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 public class CuentaBancariaJpaDaoImpl implements CuentaBancariaJpaDao {
@@ -34,11 +36,17 @@ public class CuentaBancariaJpaDaoImpl implements CuentaBancariaJpaDao {
     }
 
     @Override
-    public CuentaBancariaJpaEntity getByIban(String iban) {
+    public Optional<CuentaBancariaJpaEntity> getByIban(String iban) {
         String sql = "SELECT c FROM CuentaBancariaJpaEntity c WHERE c.iban = :iban";
-        return entityManager.createQuery(sql, CuentaBancariaJpaEntity.class)
-                .setParameter("iban", iban)
-                .getSingleResult();
+        TypedQuery<CuentaBancariaJpaEntity> query = entityManager.createQuery(sql, CuentaBancariaJpaEntity.class);
+        query.setParameter("iban", iban);
+
+        List<CuentaBancariaJpaEntity> results = query.getResultList();
+        if (results.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(results.get(0));
+        }
     }
 
     @Transactional

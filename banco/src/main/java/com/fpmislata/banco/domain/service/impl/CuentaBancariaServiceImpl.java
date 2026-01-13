@@ -10,6 +10,7 @@ import com.fpmislata.banco.domain.repository.entity.CuentaBancariaEntity;
 import com.fpmislata.banco.domain.service.CuentaBancariaService;
 import com.fpmislata.banco.domain.service.dto.ClienteDto;
 import com.fpmislata.banco.domain.service.dto.CuentaBancariaDto;
+import com.fpmislata.banco.exception.ResourceNotFoundException;
 
 public class CuentaBancariaServiceImpl implements CuentaBancariaService {
 
@@ -41,9 +42,9 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
 
     @Override
     public CuentaBancariaDto getByIban(String iban) {
-        CuentaBancariaEntity cuentaEntity = cuentaBancariaRepository.getByIban(iban);
-        return CuentaBancariaMapper.getInstance()
-                .fromModelToDto(CuentaBancariaMapper.getInstance().fromEntityToModel(cuentaEntity));
+        return cuentaBancariaRepository.getByIban(iban).map(CuentaBancariaMapper.getInstance()::fromEntityToModel)
+                .map(CuentaBancariaMapper.getInstance()::fromModelToDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta con iban: " + iban + " no encontrada"));
     }
 
     @Override

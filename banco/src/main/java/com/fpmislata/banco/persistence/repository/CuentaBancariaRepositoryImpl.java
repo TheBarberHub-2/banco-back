@@ -10,6 +10,7 @@ import com.fpmislata.banco.persistence.repository.mapper.CuentaBancariaMapper;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
 
@@ -35,9 +36,8 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
     }
 
     @Override
-    public CuentaBancariaEntity getByIban(String iban) {
-        CuentaBancariaJpaEntity jpaEntity = cuentaBancariaJpaDao.getByIban(iban);
-        return CuentaBancariaMapper.getInstance().fromJpaToEntity(jpaEntity);
+    public Optional<CuentaBancariaEntity> getByIban(String iban) {
+        return cuentaBancariaJpaDao.getByIban(iban).map(CuentaBancariaMapper.getInstance()::fromJpaToEntity);
     }
 
     @Override

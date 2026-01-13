@@ -1,6 +1,7 @@
 package com.fpmislata.banco.persistence.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.fpmislata.banco.domain.repository.TarjetaCreditoRepository;
 import com.fpmislata.banco.domain.repository.entity.TarjetaCreditoEntity;
@@ -25,9 +26,9 @@ public class TarjetaCreditoRepositoryImpl implements TarjetaCreditoRepository {
     }
 
     @Override
-    public TarjetaCreditoEntity findByNumeroTarjeta(String numeroTarjeta) {
-        TarjetaCreditoJpaEntity jpaEntity = tarjetaCreditoJpaDao.findByNumeroTarjeta(numeroTarjeta);
-        return TarjetaCreditoMapper.getInstance().fromJpaToEntity(jpaEntity);
+    public Optional<TarjetaCreditoEntity> findByNumeroTarjeta(String numeroTarjeta) {
+        return tarjetaCreditoJpaDao.findByNumeroTarjeta(numeroTarjeta)
+                .map(TarjetaCreditoMapper.getInstance()::fromJpaToEntity);
     }
 
 }
