@@ -1,18 +1,12 @@
 package com.fpmislata.banco.domain.repository;
 
-import com.fpmislata.banco.domain.model.CuentaBancaria;
-import com.fpmislata.banco.domain.model.Page;
+import com.fpmislata.banco.domain.repository.entity.ClienteEntity;
+import com.fpmislata.banco.domain.repository.entity.CuentaBancariaEntity;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface CuentaBancariaRepository {
-    Page<CuentaBancaria> findAll(int page, int size);
+    List<CuentaBancariaEntity> findByCliente(long clienteId);
 
-    Optional<CuentaBancaria> findById(long id);
-
-    Optional<CuentaBancaria> findByIban(String iban);
-
-    CuentaBancaria save(CuentaBancaria cuentaBancaria);
-
-    void delete(long id);
+    ClienteEntity getClienteByCuenta(long cuentaId);
 }

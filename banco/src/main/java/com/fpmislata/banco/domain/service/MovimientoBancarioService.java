@@ -1,14 +1,9 @@
 package com.fpmislata.banco.domain.service;
 
-import com.fpmislata.banco.domain.model.Page;
 import com.fpmislata.banco.domain.service.dto.MovimientoBancarioDto;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface MovimientoBancarioService {
-    MovimientoBancarioDto create(MovimientoBancarioDto movimientoBancarioDto);
-
-    Page<MovimientoBancarioDto> findAll(int page, int size);
-
-    Optional<MovimientoBancarioDto> findById(long id);
+    List<MovimientoBancarioDto> findByCuenta(long cuentaId);
 }

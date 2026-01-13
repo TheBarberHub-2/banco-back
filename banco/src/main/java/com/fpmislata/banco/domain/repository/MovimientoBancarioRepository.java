@@ -1,14 +1,9 @@
 package com.fpmislata.banco.domain.repository;
 
-import com.fpmislata.banco.domain.model.MovimientoBancario;
-import com.fpmislata.banco.domain.model.Page;
+import com.fpmislata.banco.domain.repository.entity.MovimientoBancarioEntity;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface MovimientoBancarioRepository {
-    Page<MovimientoBancario> findAll(int page, int size);
-
-    Optional<MovimientoBancario> findById(long id);
-
-    MovimientoBancario save(MovimientoBancario movimientoBancario);
+    List<MovimientoBancarioEntity> findByCuenta(long cuentaId);
 }

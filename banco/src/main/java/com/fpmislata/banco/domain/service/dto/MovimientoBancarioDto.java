@@ -4,14 +4,30 @@ import com.fpmislata.banco.enums.OrigenMovimientoBancario;
 import com.fpmislata.banco.enums.TipoMovimientoBancario;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public record MovimientoBancarioDto(
-        Long id,
-        @NotNull TipoMovimientoBancario tipoMovimientoBancario,
-        @NotNull OrigenMovimientoBancario origenMovimientoBancario,
-        TarjetaCreditoDto tarjetaCreditoOrigen,
-        @NotNull Date fecha,
-        @NotNull BigDecimal importe,
-        String concepto) {
+                Long id,
+                @NotNull CuentaBancariaDto cuentaBancaria,
+                @NotNull TipoMovimientoBancario tipoMovimientoBancario,
+                @NotNull OrigenMovimientoBancario origenMovimientoBancario,
+                TarjetaCreditoDto tarjetaCreditoOrigen,
+                @NotNull LocalDateTime fecha,
+                @NotNull BigDecimal importe,
+                String concepto) {
+
+        public MovimientoBancarioDto(Long id, CuentaBancariaDto cuentaBancaria,
+                        TipoMovimientoBancario tipoMovimientoBancario,
+                        OrigenMovimientoBancario origenMovimientoBancario,
+                        TarjetaCreditoDto tarjetaCreditoOrigen, LocalDateTime fecha,
+                        BigDecimal importe, String concepto) {
+                this.id = id;
+                this.cuentaBancaria = cuentaBancaria;
+                this.tipoMovimientoBancario = tipoMovimientoBancario;
+                this.origenMovimientoBancario = origenMovimientoBancario;
+                this.tarjetaCreditoOrigen = tarjetaCreditoOrigen;
+                this.fecha = fecha;
+                this.importe = importe;
+                this.concepto = concepto;
+        }
 }

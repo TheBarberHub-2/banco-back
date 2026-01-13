@@ -1,33 +1,28 @@
 package com.fpmislata.banco.controller.mapper;
 
-import com.fpmislata.banco.controller.webModel.request.CuentaBancariaRequest;
 import com.fpmislata.banco.controller.webModel.response.CuentaBancariaDetailResponse;
 import com.fpmislata.banco.domain.service.dto.CuentaBancariaDto;
 
 public class CuentaBancariaMapper {
-    private static CuentaBancariaMapper instance;
+
+    private static CuentaBancariaMapper INSTANCE;
 
     private CuentaBancariaMapper() {
     }
 
     public static CuentaBancariaMapper getInstance() {
-        if (instance == null) {
-            instance = new CuentaBancariaMapper();
+        if (INSTANCE == null) {
+            INSTANCE = new CuentaBancariaMapper();
         }
-        return instance;
+        return INSTANCE;
     }
 
-    public CuentaBancariaDto fromRequestToDto(CuentaBancariaRequest request) {
-        return new CuentaBancariaDto(
-                null,
-                request.saldo(),
-                request.iban());
-    }
-
-    public CuentaBancariaDetailResponse fromDtoToDetail(CuentaBancariaDto dto) {
+    public CuentaBancariaDetailResponse fromDtoToResponse(CuentaBancariaDto cuentaBancariaDto) {
+        if (cuentaBancariaDto == null) {
+            return null;
+        }
         return new CuentaBancariaDetailResponse(
-                dto.id(),
-                dto.saldo(),
-                dto.iban());
+                cuentaBancariaDto.saldo(),
+                cuentaBancariaDto.iban());
     }
 }

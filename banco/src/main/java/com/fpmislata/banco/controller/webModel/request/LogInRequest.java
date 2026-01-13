@@ -1,6 +1,7 @@
 package com.fpmislata.banco.controller.webModel.request;
 
-public record AutorizacionRequest(
+public record LogInRequest(
         String login,
-        String api_token) {
+        String password) {
+
 }
