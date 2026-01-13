@@ -24,4 +24,10 @@ public class TarjetaCreditoRepositoryImpl implements TarjetaCreditoRepository {
                 .toList();
     }
 
+    @Override
+    public TarjetaCreditoEntity findByNumeroTarjeta(String numeroTarjeta) {
+        TarjetaCreditoJpaEntity jpaEntity = tarjetaCreditoJpaDao.findByNumeroTarjeta(numeroTarjeta);
+        return TarjetaCreditoMapper.getInstance().fromJpaToEntity(jpaEntity);
+    }
+
 }

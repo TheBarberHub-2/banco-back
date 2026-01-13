@@ -28,4 +28,13 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
         return movimientoBancarioDto;
     }
 
+    @Override
+    public MovimientoBancarioDto insert(MovimientoBancarioDto movimientoBancarioDto) {
+        MovimientoBancarioEntity movimientoBancarioEntity = MovimientoBancarioMapper.getInstance()
+                .fromModelToEntity(MovimientoBancarioMapper.getInstance().fromDtoToModel(movimientoBancarioDto));
+        MovimientoBancarioEntity insertedEntity = movimientoBancarioRepository.insert(movimientoBancarioEntity);
+        return MovimientoBancarioMapper.getInstance()
+                .fromModelToDto(MovimientoBancarioMapper.getInstance().fromEntityToModel(insertedEntity));
+    }
+
 }

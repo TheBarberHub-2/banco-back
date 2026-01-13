@@ -1,5 +1,6 @@
 package com.fpmislata.banco.domain.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.fpmislata.banco.domain.mapper.ClienteMapper;
@@ -36,6 +37,21 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
                 ClienteMapper.getInstance().fromEntityToModel(cuentaBancariaRepository.getClienteByCuenta(cuentaId)));
 
         return clienteDto;
+    }
+
+    @Override
+    public CuentaBancariaDto getByIban(String iban) {
+        CuentaBancariaEntity cuentaEntity = cuentaBancariaRepository.getByIban(iban);
+        return CuentaBancariaMapper.getInstance()
+                .fromModelToDto(CuentaBancariaMapper.getInstance().fromEntityToModel(cuentaEntity));
+    }
+
+    @Override
+    public CuentaBancariaDto updateSaldo(long cuentaId, BigDecimal saldo) {
+        CuentaBancariaDto cuentaBancariaDto = CuentaBancariaMapper.getInstance().fromModelToDto(CuentaBancariaMapper
+                .getInstance().fromEntityToModel(cuentaBancariaRepository.updateSaldo(cuentaId, saldo)));
+
+        return cuentaBancariaDto;
     }
 
 }

@@ -7,6 +7,7 @@ import com.fpmislata.banco.persistence.dao.jpa.entity.MovimientoBancarioJpaEntit
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
 
@@ -19,5 +20,12 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
         return entityManager.createQuery(sql, MovimientoBancarioJpaEntity.class)
                 .setParameter("cuentaBancariaId", cuentaBancariaId)
                 .getResultList();
+    }
+
+    @Transactional
+    @Override
+    public MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {
+        entityManager.persist(movimientoBancarioJpaEntity);
+        return movimientoBancarioJpaEntity;
     }
 }

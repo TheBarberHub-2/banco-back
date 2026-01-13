@@ -25,4 +25,11 @@ public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
                 .toList();
         return dtos;
     }
+
+    @Override
+    public TarjetaCreditoDto findByNumeroTarjeta(String numeroTarjeta) {
+        TarjetaCreditoEntity entity = tarjetaCreditoRepository.findByNumeroTarjeta(numeroTarjeta);
+        return TarjetaCreditoMapper.getInstance()
+                .fromModelToDto(TarjetaCreditoMapper.getInstance().fromEntityToModel(entity));
+    }
 }

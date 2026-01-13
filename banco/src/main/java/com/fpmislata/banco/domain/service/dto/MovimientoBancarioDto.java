@@ -2,7 +2,10 @@ package com.fpmislata.banco.domain.service.dto;
 
 import com.fpmislata.banco.enums.OrigenMovimientoBancario;
 import com.fpmislata.banco.enums.TipoMovimientoBancario;
+
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -14,7 +17,7 @@ public record MovimientoBancarioDto(
                 TarjetaCreditoDto tarjetaCreditoOrigen,
                 @NotNull LocalDateTime fecha,
                 @NotNull BigDecimal importe,
-                String concepto) {
+                @NotNull @Size(min = 3) String concepto) {
 
         public MovimientoBancarioDto(Long id, CuentaBancariaDto cuentaBancaria,
                         TipoMovimientoBancario tipoMovimientoBancario,

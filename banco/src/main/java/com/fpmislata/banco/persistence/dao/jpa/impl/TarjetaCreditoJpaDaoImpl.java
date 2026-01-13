@@ -20,4 +20,12 @@ public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
                 .setParameter("cuentaBancariaId", cuentaBancariaId)
                 .getResultList();
     }
+
+    @Override
+    public TarjetaCreditoJpaEntity findByNumeroTarjeta(String numeroTarjeta) {
+        String sql = "SELECT t FROM TarjetaCreditoJpaEntity t WHERE t.numeroTarjeta = :numeroTarjeta";
+        return entityManager.createQuery(sql, TarjetaCreditoJpaEntity.class)
+                .setParameter("numeroTarjeta", numeroTarjeta)
+                .getSingleResult();
+    }
 }

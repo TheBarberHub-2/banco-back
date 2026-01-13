@@ -6,4 +6,6 @@ import com.fpmislata.banco.domain.service.dto.TarjetaCreditoDto;
 
 public interface TarjetaCreditoService {
     List<TarjetaCreditoDto> findByCuentaBancaria(long cuentaBancariaId);
+
+    TarjetaCreditoDto findByNumeroTarjeta(String numeroTarjeta);
 }

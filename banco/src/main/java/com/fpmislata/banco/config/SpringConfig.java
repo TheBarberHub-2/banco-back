@@ -13,12 +13,14 @@ import com.fpmislata.banco.domain.service.AuthService;
 import com.fpmislata.banco.domain.service.ClienteService;
 import com.fpmislata.banco.domain.service.CuentaBancariaService;
 import com.fpmislata.banco.domain.service.MovimientoBancarioService;
+import com.fpmislata.banco.domain.service.PagoTarjetaService;
 import com.fpmislata.banco.domain.service.SesionService;
 import com.fpmislata.banco.domain.service.TarjetaCreditoService;
 import com.fpmislata.banco.domain.service.impl.AuthServiceImpl;
 import com.fpmislata.banco.domain.service.impl.ClienteServiceImpl;
 import com.fpmislata.banco.domain.service.impl.CuentaBancariaServiceImpl;
 import com.fpmislata.banco.domain.service.impl.MovimientoBancarioServiceImpl;
+import com.fpmislata.banco.domain.service.impl.PagoTarjetaServiceImpl;
 import com.fpmislata.banco.domain.service.impl.SesionServiceImpl;
 import com.fpmislata.banco.domain.service.impl.TarjetaCreditoServiceImpl;
 import com.fpmislata.banco.persistence.PersistenceConfig;
@@ -92,5 +94,14 @@ public class SpringConfig {
     @Bean
     public AuthService authService(ClienteService clienteService, SesionService sesionService) {
         return new AuthServiceImpl(clienteService, sesionService);
+    }
+
+    @Bean
+    public PagoTarjetaService pagoTarjetaService(ClienteService clienteService,
+            TarjetaCreditoService tarjetaCreditoService,
+            CuentaBancariaService cuentaBancariaService,
+            MovimientoBancarioService movimientoBancarioService) {
+        return new PagoTarjetaServiceImpl(clienteService, tarjetaCreditoService, cuentaBancariaService,
+                movimientoBancarioService);
     }
 }

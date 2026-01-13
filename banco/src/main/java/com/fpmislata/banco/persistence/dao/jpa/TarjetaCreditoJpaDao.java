@@ -6,4 +6,6 @@ import com.fpmislata.banco.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
 
 public interface TarjetaCreditoJpaDao {
     List<TarjetaCreditoJpaEntity> findByCuentaBancaria(long cuentaBancariaId);
+
+    TarjetaCreditoJpaEntity findByNumeroTarjeta(String numeroTarjeta);
 }

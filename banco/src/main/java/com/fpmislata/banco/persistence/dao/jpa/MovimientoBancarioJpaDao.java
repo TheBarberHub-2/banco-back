@@ -6,4 +6,6 @@ import com.fpmislata.banco.persistence.dao.jpa.entity.MovimientoBancarioJpaEntit
 
 public interface MovimientoBancarioJpaDao {
     List<MovimientoBancarioJpaEntity> findByCuentaBancaria(long cuentaBancariaId);
+
+    MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity);
 }

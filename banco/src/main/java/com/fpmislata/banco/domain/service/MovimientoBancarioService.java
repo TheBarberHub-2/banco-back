@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MovimientoBancarioService {
     List<MovimientoBancarioDto> findByCuenta(long cuentaId);
+
+    MovimientoBancarioDto insert(MovimientoBancarioDto movimientoBancarioDto);
 }

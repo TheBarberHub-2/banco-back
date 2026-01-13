@@ -23,4 +23,12 @@ public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepos
                 .map(MovimientoBancarioMapper.getInstance()::fromJpaToEntity)
                 .toList();
     }
+
+    @Override
+    public MovimientoBancarioEntity insert(MovimientoBancarioEntity movimientoBancarioEntity) {
+        MovimientoBancarioJpaEntity jpaEntity = MovimientoBancarioMapper.getInstance()
+                .fromEntityToJpa(movimientoBancarioEntity);
+        MovimientoBancarioJpaEntity insertedJpaEntity = movimientoBancarioJpaDao.insert(jpaEntity);
+        return MovimientoBancarioMapper.getInstance().fromJpaToEntity(insertedJpaEntity);
+    }
 }

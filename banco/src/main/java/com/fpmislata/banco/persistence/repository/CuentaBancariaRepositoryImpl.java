@@ -8,6 +8,7 @@ import com.fpmislata.banco.persistence.dao.jpa.entity.CuentaBancariaJpaEntity;
 import com.fpmislata.banco.persistence.repository.mapper.ClienteMapper;
 import com.fpmislata.banco.persistence.repository.mapper.CuentaBancariaMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
@@ -31,5 +32,19 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
         ClienteEntity clienteEntity = ClienteMapper.getInstance()
                 .fromJpaToEntity(cuentaBancariaJpaDao.getClienteByCuenta(cuentaId));
         return clienteEntity;
+    }
+
+    @Override
+    public CuentaBancariaEntity getByIban(String iban) {
+        CuentaBancariaJpaEntity jpaEntity = cuentaBancariaJpaDao.getByIban(iban);
+        return CuentaBancariaMapper.getInstance().fromJpaToEntity(jpaEntity);
+    }
+
+    @Override
+    public CuentaBancariaEntity updateSaldo(long cuentaId, BigDecimal saldo) {
+        CuentaBancariaEntity cuentaBancariaEntity = CuentaBancariaMapper.getInstance()
+                .fromJpaToEntity(cuentaBancariaJpaDao.updateSaldo(cuentaId, saldo));
+
+        return cuentaBancariaEntity;
     }
 }

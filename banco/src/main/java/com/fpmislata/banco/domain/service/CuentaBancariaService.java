@@ -1,5 +1,6 @@
 package com.fpmislata.banco.domain.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.fpmislata.banco.domain.service.dto.ClienteDto;
@@ -9,4 +10,8 @@ public interface CuentaBancariaService {
     List<CuentaBancariaDto> findByCliente(long clienteId);
 
     ClienteDto getClienteByCuenta(long cuentaId);
+
+    CuentaBancariaDto getByIban(String iban);
+
+    CuentaBancariaDto updateSaldo(long cuentaId, BigDecimal saldo);
 }
