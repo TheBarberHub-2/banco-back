@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fpmislata.banco.controller.mapper.ClienteMapper;
 import com.fpmislata.banco.controller.webModel.response.ClienteDetailResponse;
+import com.fpmislata.banco.controller.webModel.response.ClienteTokenResponse;
 import com.fpmislata.banco.domain.service.ClienteService;
 
 @RestController
@@ -25,6 +26,14 @@ public class ClienteController {
     public ResponseEntity<ClienteDetailResponse> getByLogin(@RequestParam String login) {
         ClienteDetailResponse response = ClienteMapper.getInstance()
                 .fromDtoToResponse(clienteService.getByLogin(login));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/token")
+    public ResponseEntity<ClienteTokenResponse> getTokenByLogin(@RequestParam String login) {
+        ClienteTokenResponse response = ClienteMapper.getInstance()
+                .fromDtoToTokenResponse(clienteService.getByLogin(login));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

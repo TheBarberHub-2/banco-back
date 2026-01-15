@@ -1,6 +1,7 @@
 package com.fpmislata.banco.controller.mapper;
 
 import com.fpmislata.banco.controller.webModel.response.ClienteDetailResponse;
+import com.fpmislata.banco.controller.webModel.response.ClienteTokenResponse;
 import com.fpmislata.banco.domain.service.dto.ClienteDto;
 
 public class ClienteMapper {
@@ -26,5 +27,14 @@ public class ClienteMapper {
                 clienteDto.apellido1(),
                 clienteDto.apellido2(),
                 clienteDto.dni());
+    }
+
+    public ClienteTokenResponse fromDtoToTokenResponse(ClienteDto clienteDto) {
+        if (clienteDto == null) {
+            return null;
+        }
+        return new ClienteTokenResponse(
+                clienteDto.login(),
+                clienteDto.apiToken());
     }
 }

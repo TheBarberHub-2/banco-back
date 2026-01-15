@@ -73,6 +73,10 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
             throw new BusinessException("Saldo insuficiente en la cuenta asociada a la tarjeta");
         }
 
+        if (cuentaOrigen.id() == cuentaDestino.id()) {
+            throw new BusinessException("No puedes hacer una transferencia a tu propia cuenta");
+        }
+
         MovimientoBancarioDto movimientoOrigen = new MovimientoBancarioDto(
                 null,
                 cuentaOrigen,

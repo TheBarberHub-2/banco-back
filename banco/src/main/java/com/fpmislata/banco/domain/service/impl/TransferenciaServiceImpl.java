@@ -61,6 +61,10 @@ public class TransferenciaServiceImpl implements TransferenciaService {
             throw new BusinessException("Saldo insuficiente en la cuenta origen");
         }
 
+        if (cuentaOrigen.id() == cuentaDestino.id()) {
+            throw new BusinessException("No puedes hacer una transferencia a tu propia cuenta");
+        }
+
         MovimientoBancarioDto movimientoOrigen = new MovimientoBancarioDto(
                 null,
                 cuentaOrigen,
