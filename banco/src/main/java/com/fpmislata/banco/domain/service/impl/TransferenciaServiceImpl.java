@@ -4,42 +4,37 @@ import java.time.LocalDateTime;
 
 import com.fpmislata.banco.controller.webModel.request.AutorizacionRequest;
 import com.fpmislata.banco.controller.webModel.request.DestinoRequest;
-import com.fpmislata.banco.controller.webModel.request.OrigenPagoTarjetaRequest;
+import com.fpmislata.banco.controller.webModel.request.OrigenTransferencia;
 import com.fpmislata.banco.controller.webModel.request.PagoRequest;
 import com.fpmislata.banco.domain.service.ClienteService;
 import com.fpmislata.banco.domain.service.CuentaBancariaService;
 import com.fpmislata.banco.domain.service.MovimientoBancarioService;
-import com.fpmislata.banco.domain.service.PagoTarjetaService;
-import com.fpmislata.banco.domain.service.TarjetaCreditoService;
+import com.fpmislata.banco.domain.service.TransferenciaService;
 import com.fpmislata.banco.domain.service.dto.ClienteDto;
 import com.fpmislata.banco.domain.service.dto.CuentaBancariaDto;
 import com.fpmislata.banco.domain.service.dto.MovimientoBancarioDto;
-import com.fpmislata.banco.domain.service.dto.TarjetaCreditoDto;
 import com.fpmislata.banco.domain.validation.spring_validator.DtoValidator;
 import com.fpmislata.banco.enums.OrigenMovimientoBancario;
 import com.fpmislata.banco.enums.TipoMovimientoBancario;
 import com.fpmislata.banco.exception.BusinessException;
 
-public class PagoTarjetaServiceImpl implements PagoTarjetaService {
+public class TransferenciaServiceImpl implements TransferenciaService {
 
     private final ClienteService clienteService;
-
-    private final TarjetaCreditoService tarjetaCreditoService;
 
     private final CuentaBancariaService cuentaBancariaService;
 
     private final MovimientoBancarioService movimientoBancarioService;
 
-    public PagoTarjetaServiceImpl(ClienteService clienteService, TarjetaCreditoService tarjetaCreditoService,
+    public TransferenciaServiceImpl(ClienteService clienteService,
             CuentaBancariaService cuentaBancariaService, MovimientoBancarioService movimientoBancarioService) {
         this.clienteService = clienteService;
-        this.tarjetaCreditoService = tarjetaCreditoService;
         this.cuentaBancariaService = cuentaBancariaService;
         this.movimientoBancarioService = movimientoBancarioService;
     }
 
     @Override
-    public void pagoTarjeta(AutorizacionRequest autorizacionRequest, OrigenPagoTarjetaRequest origenRequest,
+    public void transferencia(AutorizacionRequest autorizacionRequest, OrigenTransferencia origenRequest,
             DestinoRequest destinoRequest, PagoRequest pagoRequest) {
 
         ClienteDto clienteDto = clienteService.getByLogin(autorizacionRequest.login());
@@ -48,37 +43,30 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
             throw new BusinessException("Autorización incorrecta");
         }
 
-        TarjetaCreditoDto tarjetaCreditoDto = tarjetaCreditoService.findByNumeroTarjeta(origenRequest.numeroTarjeta());
+        DtoValidator.validate(origenRequest);
 
-        if (!tarjetaCreditoDto.fechaCaducidad().equals(origenRequest.fechaCaducidad())
-                || !tarjetaCreditoDto.cvc().equals(origenRequest.cvc())
-                || !tarjetaCreditoDto.nombreCompleto().equals(origenRequest.nombreCompleto())) {
+        CuentaBancariaDto cuentaOrigen = cuentaBancariaService.getByIban(origenRequest.iban());
 
-            throw new BusinessException("Datos de la tarjeta incorrectos");
+        if (cuentaOrigen.cliente().id() != clienteDto.id()) {
+            throw new BusinessException("La cuenta origen no pertenece al usuario");
         }
 
         DtoValidator.validate(destinoRequest);
 
         CuentaBancariaDto cuentaDestino = cuentaBancariaService.getByIban(destinoRequest.iban());
 
-        if (cuentaDestino.cliente().id() != clienteDto.id()) {
-            throw new BusinessException("La cuenta destino no pertenece al cliente");
-        }
-
-        CuentaBancariaDto cuentaOrigen = tarjetaCreditoDto.cuenta();
-
         DtoValidator.validate(pagoRequest);
 
         if (cuentaOrigen.saldo().compareTo(pagoRequest.importe()) < 0) {
-            throw new BusinessException("Saldo insuficiente en la cuenta asociada a la tarjeta");
+            throw new BusinessException("Saldo insuficiente en la cuenta origen");
         }
 
         MovimientoBancarioDto movimientoOrigen = new MovimientoBancarioDto(
                 null,
                 cuentaOrigen,
                 TipoMovimientoBancario.DEBE,
-                OrigenMovimientoBancario.TARJETA_BANCARIA,
-                tarjetaCreditoDto,
+                OrigenMovimientoBancario.TRANSFERENCIA,
+                null,
                 LocalDateTime.now(),
                 pagoRequest.importe().negate(),
                 pagoRequest.concepto());
@@ -87,8 +75,8 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
                 null,
                 cuentaDestino,
                 TipoMovimientoBancario.HABER,
-                OrigenMovimientoBancario.TARJETA_BANCARIA,
-                tarjetaCreditoDto,
+                OrigenMovimientoBancario.TRANSFERENCIA,
+                null,
                 LocalDateTime.now(),
                 pagoRequest.importe(),
                 pagoRequest.concepto());
