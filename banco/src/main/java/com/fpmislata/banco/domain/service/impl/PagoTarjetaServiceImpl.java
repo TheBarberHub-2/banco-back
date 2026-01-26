@@ -92,7 +92,7 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
                 cuentaDestino,
                 TipoMovimientoBancario.HABER,
                 OrigenMovimientoBancario.TARJETA_BANCARIA,
-                tarjetaCreditoDto,
+                null,
                 LocalDateTime.now(),
                 pagoRequest.importe(),
                 pagoRequest.concepto());
