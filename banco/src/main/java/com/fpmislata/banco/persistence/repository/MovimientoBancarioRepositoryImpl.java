@@ -25,6 +25,14 @@ public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepos
     }
 
     @Override
+    public List<MovimientoBancarioEntity> findByTarjeta(long tarjetaId) {
+        List<MovimientoBancarioJpaEntity> jpaEntities = movimientoBancarioJpaDao.findByTarjeta(tarjetaId);
+        return jpaEntities.stream()
+                .map(MovimientoBancarioMapper.getInstance()::fromJpaToEntity)
+                .toList();
+    }
+
+    @Override
     public MovimientoBancarioEntity insert(MovimientoBancarioEntity movimientoBancarioEntity) {
         MovimientoBancarioJpaEntity jpaEntity = MovimientoBancarioMapper.getInstance()
                 .fromEntityToJpa(movimientoBancarioEntity);

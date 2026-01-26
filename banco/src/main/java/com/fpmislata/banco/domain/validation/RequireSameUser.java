@@ -14,6 +14,7 @@ public @interface RequireSameUser {
 
     enum ParamType {
         CLIENTE,
-        CUENTA
+        CUENTA,
+        TARJETA
     }
 }

@@ -36,6 +36,13 @@ public class CuentaBancariaRepositoryImpl implements CuentaBancariaRepository {
     }
 
     @Override
+    public CuentaBancariaEntity getByTarjeta(long tarjetaId) {
+        CuentaBancariaEntity cuentaBancariaEntity = CuentaBancariaMapper.getInstance()
+                .fromJpaToEntity(cuentaBancariaJpaDao.getByTarjeta(tarjetaId));
+        return cuentaBancariaEntity;
+    }
+
+    @Override
     public Optional<CuentaBancariaEntity> getByIban(String iban) {
         return cuentaBancariaJpaDao.getByIban(iban).map(CuentaBancariaMapper.getInstance()::fromJpaToEntity);
     }

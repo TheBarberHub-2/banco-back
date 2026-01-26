@@ -41,6 +41,13 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
     }
 
     @Override
+    public CuentaBancariaDto getByTarjeta(long tarjetaId) {
+        CuentaBancariaDto cuentaBancariaDto = CuentaBancariaMapper.getInstance().fromModelToDto(
+                CuentaBancariaMapper.getInstance().fromEntityToModel(cuentaBancariaRepository.getByTarjeta(tarjetaId)));
+        return cuentaBancariaDto;
+    }
+
+    @Override
     public CuentaBancariaDto getByIban(String iban) {
         return cuentaBancariaRepository.getByIban(iban).map(CuentaBancariaMapper.getInstance()::fromEntityToModel)
                 .map(CuentaBancariaMapper.getInstance()::fromModelToDto)
@@ -54,5 +61,4 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
 
         return cuentaBancariaDto;
     }
-
 }

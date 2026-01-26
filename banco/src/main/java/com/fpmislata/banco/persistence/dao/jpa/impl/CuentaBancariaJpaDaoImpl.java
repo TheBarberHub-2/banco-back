@@ -36,6 +36,14 @@ public class CuentaBancariaJpaDaoImpl implements CuentaBancariaJpaDao {
     }
 
     @Override
+    public CuentaBancariaJpaEntity getByTarjeta(long tarjetaId) {
+        String sql = "SELECT cuentaBancaria FROM TarjetaCreditoJpaEntity t WHERE t.id = :tarjetaId";
+        return entityManager.createQuery(sql, CuentaBancariaJpaEntity.class)
+                .setParameter("tarjetaId", tarjetaId)
+                .getSingleResult();
+    }
+
+    @Override
     public Optional<CuentaBancariaJpaEntity> getByIban(String iban) {
         String sql = "SELECT c FROM CuentaBancariaJpaEntity c WHERE c.iban = :iban";
         TypedQuery<CuentaBancariaJpaEntity> query = entityManager.createQuery(sql, CuentaBancariaJpaEntity.class);

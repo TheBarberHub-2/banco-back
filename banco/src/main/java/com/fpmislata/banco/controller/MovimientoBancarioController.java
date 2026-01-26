@@ -32,4 +32,14 @@ public class MovimientoBancarioController {
                 .toList();
         return ResponseEntity.ok(movimientos);
     }
+
+    @GetMapping("/tarjeta/{tarjetaId}")
+    @RequireSameUser(paramName = "tarjetaId", type = RequireSameUser.ParamType.TARJETA)
+    public ResponseEntity<List<MovimientoBancarioDetailResponse>> findByTarjeta(@PathVariable int tarjetaId) {
+        List<MovimientoBancarioDetailResponse> movimientos = movimientoBancarioService.findByTarjeta(tarjetaId)
+                .stream()
+                .map(MovimientoBancarioMapper.getInstance()::fromDtoToResponse)
+                .toList();
+        return ResponseEntity.ok(movimientos);
+    }
 }

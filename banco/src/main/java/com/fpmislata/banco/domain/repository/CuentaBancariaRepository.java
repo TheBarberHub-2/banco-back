@@ -12,6 +12,8 @@ public interface CuentaBancariaRepository {
 
     ClienteEntity getClienteByCuenta(long cuentaId);
 
+    CuentaBancariaEntity getByTarjeta(long tarjetaId);
+
     Optional<CuentaBancariaEntity> getByIban(String iban);
 
     CuentaBancariaEntity updateSaldo(long cuentaId, BigDecimal saldo);

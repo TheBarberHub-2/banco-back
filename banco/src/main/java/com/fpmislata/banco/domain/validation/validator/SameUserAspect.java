@@ -46,8 +46,10 @@ public class SameUserAspect {
 
                 if (requireSameUser.type() == RequireSameUser.ParamType.CLIENTE) {
                     clienteId = paramValue;
-                } else {
+                } else if (requireSameUser.type() == RequireSameUser.ParamType.CUENTA) {
                     clienteId = cuentaService.getClienteByCuenta(paramValue).id();
+                } else {
+                    clienteId = cuentaService.getClienteByCuenta(cuentaService.getByTarjeta(paramValue).id()).id();
                 }
 
                 if (cliente.id() != clienteId) {

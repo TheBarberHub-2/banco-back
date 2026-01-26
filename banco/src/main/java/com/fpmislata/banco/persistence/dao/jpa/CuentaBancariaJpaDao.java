@@ -12,6 +12,8 @@ public interface CuentaBancariaJpaDao {
 
     ClienteJpaEntity getClienteByCuenta(long cuentaId);
 
+    CuentaBancariaJpaEntity getByTarjeta(long tarjetaId);
+
     Optional<CuentaBancariaJpaEntity> getByIban(String iban);
 
     CuentaBancariaJpaEntity updateSaldo(long cuentaId, BigDecimal saldo);

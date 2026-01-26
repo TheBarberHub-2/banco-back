@@ -22,6 +22,14 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
                 .getResultList();
     }
 
+    @Override
+    public List<MovimientoBancarioJpaEntity> findByTarjeta(long tarjetaId) {
+        String sql = "SELECT m FROM MovimientoBancarioJpaEntity m WHERE m.tarjetaCreditoOrigen.id = :tarjetaId";
+        return entityManager.createQuery(sql, MovimientoBancarioJpaEntity.class)
+                .setParameter("tarjetaId", tarjetaId)
+                .getResultList();
+    }
+
     @Transactional
     @Override
     public MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {

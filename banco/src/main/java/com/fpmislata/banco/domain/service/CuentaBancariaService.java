@@ -11,6 +11,8 @@ public interface CuentaBancariaService {
 
     ClienteDto getClienteByCuenta(long cuentaId);
 
+    CuentaBancariaDto getByTarjeta(long tarjetaId);
+
     CuentaBancariaDto getByIban(String iban);
 
     CuentaBancariaDto updateSaldo(long cuentaId, BigDecimal saldo);

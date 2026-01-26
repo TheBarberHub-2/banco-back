@@ -29,6 +29,19 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
     }
 
     @Override
+    public List<MovimientoBancarioDto> findByTarjeta(long tarjetaId) {
+        List<MovimientoBancarioEntity> movimientoBancarioEntities = movimientoBancarioRepository
+                .findByTarjeta(tarjetaId);
+
+        List<MovimientoBancarioDto> movimientoBancarioDto = movimientoBancarioEntities.stream()
+                .map(MovimientoBancarioMapper.getInstance()::fromEntityToModel)
+                .map(MovimientoBancarioMapper.getInstance()::fromModelToDto)
+                .toList();
+
+        return movimientoBancarioDto;
+    }
+
+    @Override
     public MovimientoBancarioDto insert(MovimientoBancarioDto movimientoBancarioDto) {
         MovimientoBancarioEntity movimientoBancarioEntity = MovimientoBancarioMapper.getInstance()
                 .fromModelToEntity(MovimientoBancarioMapper.getInstance().fromDtoToModel(movimientoBancarioDto));
@@ -36,5 +49,4 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
         return MovimientoBancarioMapper.getInstance()
                 .fromModelToDto(MovimientoBancarioMapper.getInstance().fromEntityToModel(insertedEntity));
     }
-
 }
