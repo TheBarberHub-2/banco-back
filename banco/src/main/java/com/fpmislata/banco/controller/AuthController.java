@@ -19,7 +19,7 @@ import com.fpmislata.banco.domain.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
