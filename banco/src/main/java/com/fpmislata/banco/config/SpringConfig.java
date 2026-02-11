@@ -57,8 +57,9 @@ public class SpringConfig {
     }
 
     @Bean
-    public CuentaBancariaService cuentaBancariaService(CuentaBancariaRepository cuentaBancariaRepository) {
-        return new CuentaBancariaServiceImpl(cuentaBancariaRepository);
+    public CuentaBancariaService cuentaBancariaService(CuentaBancariaRepository cuentaBancariaRepository,
+            TarjetaCreditoService tarjetaCreditoService) {
+        return new CuentaBancariaServiceImpl(cuentaBancariaRepository, tarjetaCreditoService);
     }
 
     @Bean

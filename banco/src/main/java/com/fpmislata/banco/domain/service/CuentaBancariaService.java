@@ -13,6 +13,8 @@ public interface CuentaBancariaService {
 
     CuentaBancariaDto getByTarjeta(long tarjetaId);
 
+    String getIbanByNumeroTarjeta(String numeroTarjeta);
+
     CuentaBancariaDto getByIban(String iban);
 
     CuentaBancariaDto updateSaldo(long cuentaId, BigDecimal saldo);

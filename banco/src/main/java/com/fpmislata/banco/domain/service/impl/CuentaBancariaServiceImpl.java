@@ -8,6 +8,7 @@ import com.fpmislata.banco.domain.mapper.CuentaBancariaMapper;
 import com.fpmislata.banco.domain.repository.CuentaBancariaRepository;
 import com.fpmislata.banco.domain.repository.entity.CuentaBancariaEntity;
 import com.fpmislata.banco.domain.service.CuentaBancariaService;
+import com.fpmislata.banco.domain.service.TarjetaCreditoService;
 import com.fpmislata.banco.domain.service.dto.ClienteDto;
 import com.fpmislata.banco.domain.service.dto.CuentaBancariaDto;
 import com.fpmislata.banco.exception.ResourceNotFoundException;
@@ -15,9 +16,12 @@ import com.fpmislata.banco.exception.ResourceNotFoundException;
 public class CuentaBancariaServiceImpl implements CuentaBancariaService {
 
     private final CuentaBancariaRepository cuentaBancariaRepository;
+    private final TarjetaCreditoService tarjetaCreditoService;
 
-    public CuentaBancariaServiceImpl(CuentaBancariaRepository cuentaBancariaRepository) {
+    public CuentaBancariaServiceImpl(CuentaBancariaRepository cuentaBancariaRepository,
+            TarjetaCreditoService tarjetaCreditoService) {
         this.cuentaBancariaRepository = cuentaBancariaRepository;
+        this.tarjetaCreditoService = tarjetaCreditoService;
     }
 
     @Override
@@ -60,5 +64,13 @@ public class CuentaBancariaServiceImpl implements CuentaBancariaService {
                 .getInstance().fromEntityToModel(cuentaBancariaRepository.updateSaldo(cuentaId, saldo)));
 
         return cuentaBancariaDto;
+    }
+
+    @Override
+    public String getIbanByNumeroTarjeta(String numeroTarjeta) {
+        CuentaBancariaDto cuentaBancariaDto = getByTarjeta(
+                tarjetaCreditoService.findByNumeroTarjeta(numeroTarjeta).id());
+
+        return cuentaBancariaDto.iban();
     }
 }

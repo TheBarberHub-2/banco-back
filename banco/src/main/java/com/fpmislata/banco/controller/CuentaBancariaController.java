@@ -2,6 +2,7 @@ package com.fpmislata.banco.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,5 +32,12 @@ public class CuentaBancariaController {
                 .map(CuentaBancariaMapper.getInstance()::fromDtoToResponse)
                 .toList();
         return ResponseEntity.ok(cuentas);
+    }
+
+    @GetMapping("/tarjeta/{numeroTarjeta}")
+    public ResponseEntity<String> getByNumeroTarjeta(@PathVariable String numeroTarjeta) {
+        String iban = cuentaBancariaService.getIbanByNumeroTarjeta(numeroTarjeta);
+
+        return new ResponseEntity<>(iban, HttpStatus.OK);
     }
 }
