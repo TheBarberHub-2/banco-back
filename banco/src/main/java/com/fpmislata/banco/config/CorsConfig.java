@@ -15,10 +15,15 @@ public class CorsConfig {
              public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
+                                "http://localhost:4200",
                                 "http://localhost:4201",
                                 "http://greatbank.producciondaw.cip.fpmislata.com",
                                 "http://thebarberhub.producciondaw.cip.fpmislata.com",
-                                "http://thebarberhub-client.producciondaw.cip.fpmislata.com")
+                                "http://thebarberhub-client.producciondaw.cip.fpmislata.com",
+                                "http://greatbank.preproducciondaw.cip.fpmislata.com",
+                                "http://thebarberhub.preproducciondaw.cip.fpmislata.com",
+                                "http://thebarberhub-client.preproducciondaw.cip.fpmislata.com"
+                            )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
